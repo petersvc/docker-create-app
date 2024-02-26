@@ -2,14 +2,14 @@ version: '3.9'
 
 services:
   notes-ai:
-    container_name: ${PROJECT_NAME}
+    container_name: ${APP_NAME}
     environment:
-      - PROJECT_NAME
+      - APP_NAME
       - DOCKER_IMAGE
     build:
       dockerfile_inline: |
         FROM ${DOCKER_IMAGE}
-        WORKDIR /${PROJECT_NAME}
+        WORKDIR /${APP_NAME}
         COPY . .
         RUN npm install -g bun
         RUN bun i
@@ -17,9 +17,9 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - .:/${PROJECT_NAME}
+      - .:/${APP_NAME}
 
 networks:
   default:
     driver: bridge
-    name: ${PROJECT_NAME}
+    name: ${APP_NAME}
