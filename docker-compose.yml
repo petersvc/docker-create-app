@@ -1,0 +1,25 @@
+version: '3.9'
+
+services:
+  notes-ai:
+    container_name: ${PROJECT_NAME}
+    environment:
+      - PROJECT_NAME
+      - DOCKER_IMAGE
+    build:
+      dockerfile_inline: |
+        FROM ${DOCKER_IMAGE}
+        WORKDIR /${PROJECT_NAME}
+        COPY . .
+        RUN npm install -g bun
+        RUN bun i
+        CMD ["bun", "run", "dev"]
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/${PROJECT_NAME}
+
+networks:
+  default:
+    driver: bridge
+    name: ${PROJECT_NAME}

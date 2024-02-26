@@ -1,0 +1,23 @@
+version: '3.9'
+
+services:
+  next-app:
+    container_name: ${PROJECT_NAME}
+    image: ${DOCKER_IMAGE}
+    working_dir: /app
+    entrypoint: /bin/bash
+    command: > 
+      -c "npm install -g bun &&
+          bun create next-app ${PROJECT_NAME} --ts --tailwind --eslint --app --no-src-dir --import-alias @ &&
+          cd ${PROJECT_NAME} && 
+          bun add eslint @rocketseat/eslint-config -d &&
+          bun add prettier-plugin-tailwindcss -d &&
+          rm .eslintrc.json &&
+          echo '{\"extends\": [\"@rocketseat/eslint-config/next\", \"next/core-web-vitals\"]}' > .eslintrc.json &&
+          echo '{\"plugins\": [\"prettier-plugin-tailwindcss\"]}' > .prettierrc.json &&
+          chmod -R a+x /app"
+    environment:
+      - PROJECT_NAME
+      - DOCKER_IMAGE
+    volumes:
+      - .:/app
