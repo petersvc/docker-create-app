@@ -13,12 +13,11 @@ This nextjs app comes with:
 
 **Installation**
 
-1. Create a .env with two variables: PROJECT_NAME, DOCKER_IMAGE.
-   - PROJECT_NAME=YourProjectName.
-   - DOCKER_IMAGE=node:21.6.2-slim.
-2. In the docker-compose.yml file, make sure that the **service name** is equal the PROJECT_NAME.
-3. Install the **make** util.
+1. Install the **make** util.
    - On Ubuntu: sudo apt install make.
-4. Run the following command on the linux terminal: **make create**.
+2. In the docker-compose.yml file, you will want to change the **service name** for another one.
+3. Run the following command on the linux terminal:
+   - **make create app:=YourAppName**.
+   - Make sure that your **app** has the same name as the **service name**
 
 **That's it.**
