@@ -16,7 +16,8 @@ Create and run a nextjs app entirely through Docker, with no JS runtime installe
 1. Install the **make** util.
    - On Ubuntu: sudo apt install make.
 2. In the docker-compose.yml file, you will want to change the **service name** for another one.
-3. Run the following command on the linux terminal:
+3. Create a ".env" file in the same diretory.
+4. Run the following command on the linux terminal:
    - **make create app:=YourAppName**.
    - Make sure that your **app** has the same name as the **service name**.
 
