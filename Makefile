@@ -1,32 +1,41 @@
-include .env
-export
-
 dc := docker compose
-an := $(APP_NAME)
+de := docker exec -it nodejs
+fws := frameworks
+base_dir := $$(basename $$(pwd))
 
-create: 
-	make create-env && make create-up && make create-down && make clean && make up
-create-env:
-	echo "APP_NAME=$(app)\nDOCKER_IMAGE=node:21.6.2-slim" > .env
-create-up: 
-	$(dc) -f create.yml up
-create-down:
-	$(dc) -f create.yml down && docker rmi $(DOCKER_IMAGE)
-clean:
-	cp -r $(an)/. . && rm -rf $(an)
-up: 
+up:
 	$(dc) up
+
 upd:
 	$(dc) up -d
+
 down:
-	$(dc) down && docker rmi $(an)-$(an)
-start: 
-	docker start $(an)
-stop:
-	docker stop $(an)
-teste:
-	echo "teste 1 = $(an)"
-teste2:
-	echo "teste 2 = $(app)"
-delete:
-	rm -rf ../notes-ai/*
+	$(dc) down
+
+remove:
+	make down && docker rmi $(base_dir)-nodejs && rm install.sh
+
+create-app:
+	make set-env && \
+	make upd && \
+	make cp-script && \
+	$(de) sh install.sh && \
+	make cp-compose && \
+	make create-app-env && \
+	$(dc) -f $(app)/docker-compose.yml up
+	make remove
+
+set-env:
+	echo "APP_NAME=$(app)\nDOCKER_IMAGE=node:lts" > .env
+
+cp-script:
+	cp $(fws)/$(framework)/install.sh .
+
+cp-compose:
+	cp $(fws)/$(framework)/docker-compose.yml $(app)
+
+create-app-env:
+	cp .env $(app)
+
+exec:
+	$(de) /bin/bash

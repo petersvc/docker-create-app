@@ -1,0 +1,27 @@
+version: "3.9"
+
+services:
+  angular:
+    container_name: ${APP_NAME}
+    build:
+      dockerfile_inline: |
+        FROM ${DOCKER_IMAGE}
+        WORKDIR /projects/${APP_NAME}
+        COPY . .
+        RUN apt update -y && apt upgrade -y
+        RUN npm i
+        EXPOSE 4200
+        RUN npm i -g @angular/cli
+        CMD ["ng", "serve", "--host", "0.0.0.0"]
+    ports:
+      - "4200:4200"
+    environment:
+      - APP_NAME
+      - DOCKER_IMAGE
+    volumes:
+      - .:/projects/${APP_NAME}
+
+networks:
+  default:
+    driver: bridge
+    name: ${APP_NAME}
