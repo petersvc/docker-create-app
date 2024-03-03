@@ -15,7 +15,7 @@ down:
 remove:
 	make down && docker rmi $(base_dir)-nodejs && rm install.sh
 
-create-app:
+create:
 	make set-env && \
 	make upd && \
 	make cp-script && \
